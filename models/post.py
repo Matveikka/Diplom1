@@ -5,6 +5,7 @@ from backend.database import Base
 
 class PostModel(Base):
     __tablename__ = "posts"
+
     id = Column(Integer, primary_key=True, index=True)
     title = Column(String, index=True)
     rezume = Column(String)

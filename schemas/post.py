@@ -10,3 +10,6 @@ class PostModel(BaseModel):
     created_at: datetime = None
     slug: str
 
+    class Config:
+        orm_mode = True
+

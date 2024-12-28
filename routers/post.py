@@ -9,7 +9,7 @@ from typing import Annotated
 from fastapi.templating import Jinja2Templates
 
 templates = Jinja2Templates(directory="templates")
-router = APIRouter(prefix='/post', tags=['post'])
+router = APIRouter()
 
 
 def get_db():
@@ -22,7 +22,8 @@ def get_db():
 
 @router.get("/", response_class=HTMLResponse)
 async def read_posts(request: Request, db: Annotated[Session, Depends(get_db)]):
-    posts = db.scalars(select(PostModel)).all()
+    result = await db.execute(select(PostModel))
+    posts = result.scalars().all()
     return templates.TemplateResponse("home.html", {"request": request, "posts": posts})
 
 
@@ -31,7 +32,7 @@ async def read_post(post_id: int, request: Request, db: Annotated[Session, Depen
     post = db.scalar(select(PostModel).where(PostModel.id == post_id))
     if post is None:
         raise HTTPException(status_code=404, detail="Post not found")
-    return templates.TemplateResponse("post_detail.html", {"request": request, "post": post})
+    return templates.TemplateResponse("details.html", {"request": request, "post": post})
 
 
 @router.post("/posts/", response_model=PostModel)
