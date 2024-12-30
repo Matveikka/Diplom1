@@ -3,7 +3,7 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy.orm import Session
 from sqlalchemy import insert, select
 from backend.database import SessionLocal
-from schemas.post import PostModel
+from models.post import PostModel
 from datetime import datetime
 from typing import Annotated
 from fastapi.templating import Jinja2Templates
